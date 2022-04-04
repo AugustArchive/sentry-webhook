@@ -1,4 +1,4 @@
-// 🥅 sentry-webhook: Webhook handler to output Sentry errors into a Discord channel.
+// 🥅 sentry-webhook: Dead simple webhook worker for Sentry to output events in a Discord channel
 // Copyright 2022 Noel <cutie@floofy.dev>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
