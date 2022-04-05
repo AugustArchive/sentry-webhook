@@ -45,8 +45,10 @@ fn env_to_config() -> Config {
         webhook_url,
         sentry_dsn,
         level: log_level,
-        port: port.map(|p| p.parse::<u16>()
-                    .expect("Unable to parse String -> u16 for http port.")),
+        port: port.map(|p| {
+            p.parse::<u16>()
+                .expect("Unable to parse String -> u16 for http port.")
+        }),
         host,
     }
 }
