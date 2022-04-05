@@ -25,6 +25,15 @@ You can use the Docker image from the **GitHub Container Registry**:
 $ docker run -d -p 3939:3939 --name sentry-worker -v /path/to/config.toml:/app/noel/sentry/worker/config.toml ghcr.io/auguwu/sentry-worker:latest # or prepend a version :>
 ```
 
+## How to use?
+If you are using the worker, then you will need to create a developer app from the Sentry dashboard under **Settings > Developer Settings > New Internal Integration**
+
+At the moment, we didn't include **issue.create**, **issue.delete**, or **issue.update** events; only **error.create** events will pop up but error events will only open up if you're running a self-hosted instance of Sentry or have a Business Plan. If you wish to contribute for issue events, submit a PR!
+
+![](https://i-am.floof.gay/images/e0162290.png)
+
+![](https://i-am.floof.gay/images/4c892623.png)
+
 ## Example Events
 
 ### Error Created

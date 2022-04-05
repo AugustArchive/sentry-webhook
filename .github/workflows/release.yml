@@ -81,6 +81,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx/cache
           tags: |
             ghcr.io/auguwu/sentry-worker:${{steps.tag.outputs.tag}}
+            ghcr.io/auguwu/sentry-worker:latest
 
   deploy:
     name: Deploy to Kubernetes
