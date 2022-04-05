@@ -25,5 +25,10 @@ You can use the Docker image from the **GitHub Container Registry**:
 $ docker run -d -p 3939:3939 --name sentry-worker -v /path/to/config.toml:/app/noel/sentry/worker/config.toml ghcr.io/auguwu/sentry-worker:latest # or prepend a version :>
 ```
 
+## Example Events
+
+### Error Created
+![](https://i-am.floof.gay/images/d408818d.png)
+
 ## License
 **sentry-webhook** is released under the **Apache 2.0** License by Noel.
