@@ -1,5 +1,5 @@
 # 🥅 Sentry Webhook
-> *Webhook handler to output Sentry errors into a Discord channel.*
+> *Dead simple webhook worker for Sentry to output events in a Discord channel*
 
 ## Why?
 This is just a simple **Rust** HTTP service to do so, this is just for my use case and no one else. :)
@@ -16,6 +16,13 @@ $ rustc --version
 $ git clone https://github.com/auguwu/sentry-webhook
 $ cargo build --release
 $ ./target/release/sentry_webhook
+```
+
+### Docker
+You can use the Docker image from the **GitHub Container Registry**:
+
+```shell
+$ docker run -d -p 3939:3939 --name sentry-worker -v /path/to/config.toml:/app/noel/sentry/worker/config.toml ghcr.io/auguwu/sentry-worker:latest # or prepend a version :>
 ```
 
 ## License

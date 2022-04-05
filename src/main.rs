@@ -21,6 +21,7 @@ use std::{collections::HashMap, env::var, thread};
 use warp::Filter;
 
 mod config;
+mod http;
 mod routes;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -35,8 +36,9 @@ async fn main() -> Result<()> {
 
     let sentry = warp::post()
         .and(warp::path!("sentry"))
-        .and(warp::header::<String>("sentry-signature"))
-        .and(warp::body::json::<HashMap<String, String>>())
+        .and(warp::header::<String>("sentry-hook-signature"))
+        .and(warp::header::<String>("sentry-hook-resource"))
+        .and(warp::body::json::<HashMap<String, serde_json::Value>>())
         .and_then(routes::sentry);
 
     let port = config::CONFIG.port.clone();

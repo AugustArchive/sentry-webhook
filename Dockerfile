@@ -36,4 +36,4 @@ WORKDIR /app/noel/sentry/webhook
 COPY --from=builder /build/sentry/target/release/sentry_webhook .
 
 USER 1001
-ENTRYPOINT ["/build/sentry/target/release/sentry_webhook"]
+ENTRYPOINT ["/app/noel/sentry/webhook/sentry_webhook"]
