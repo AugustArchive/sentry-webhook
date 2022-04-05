@@ -23,6 +23,7 @@ use serde::{Deserialize, Serialize};
 pub struct Config {
     pub webhook_url: String,
     pub sentry_dsn: Option<String>,
+    pub level: Option<String>,
     pub port: Option<u16>,
     pub host: Option<String>,
 }
@@ -38,19 +39,14 @@ fn env_to_config() -> Config {
     let sentry_dsn = var("WORKER_SENTRY_DSN").ok();
     let port = var("WORKER_PORT").ok();
     let host = var("WORKER_HOST").ok();
+    let log_level = var("WORKER_LOG_LEVEL").ok();
 
     Config {
         webhook_url,
         sentry_dsn,
-        port: if port.is_some() {
-            let p = port.unwrap();
-            Some(
-                p.parse::<u16>()
-                    .expect("Unable to parse String -> u16 for http port."),
-            )
-        } else {
-            None
-        },
+        level: log_level,
+        port: port.map(|p| p.parse::<u16>()
+                    .expect("Unable to parse String -> u16 for http port.")),
         host,
     }
 }

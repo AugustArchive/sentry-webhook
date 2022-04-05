@@ -112,7 +112,7 @@ pub async fn sentry(
             let data = payload["data"].as_object().unwrap();
             let actor = payload["actor"].as_object().unwrap();
 
-            on_action_create(&resource.as_str(), actor, data).await;
+            on_action_create(resource.as_str(), actor, data).await;
             Ok(json(&Response::new(true, SentryResponse {})))
         }
         _ => Ok(json(&Response::<Empty>::err(
@@ -134,7 +134,7 @@ async fn on_action_create(
     let error = payload["error"].as_object().unwrap();
     let mut embed = serde_json::json!({
         "title": error["title"].as_str().unwrap_or("???"),
-        "color": 0xFF69BD as i32,
+        "color": 0xFF69BD_i32,
         "url": error["web_url"].as_str().unwrap(),
     });
 
@@ -179,7 +179,7 @@ async fn on_action_create(
                     let abs_path = frame["abs_path"].as_str().unwrap_or("");
 
                     // Skip if the absolute path is empty (since we don't really need that >:(
-                    if abs_path.len() == 0 {
+                    if abs_path.is_empty() {
                         continue;
                     }
 

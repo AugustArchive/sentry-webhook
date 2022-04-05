@@ -41,7 +41,7 @@ async fn main() -> Result<()> {
         .and(warp::body::json::<HashMap<String, serde_json::Value>>())
         .and_then(routes::sentry);
 
-    let port = config::CONFIG.port.clone().unwrap_or(3939);
+    let port = config::CONFIG.port.unwrap_or(3939);
     let routes = warp::any()
         .and(index.or(sentry))
         .with(warp::log("sentry::http"));
@@ -51,9 +51,9 @@ async fn main() -> Result<()> {
     let addr = if let Some(h) = host {
         format!("{}:{}", h, port)
             .parse::<SocketAddr>()
-            .expect(format!("Unable to parse host '{}' -> SocketAddr.", h).as_str())
+            .unwrap_or_else(|_| panic!("Unable to parse host '{}' -> SocketAddr.", h))
     } else {
-        format!("{}:{}", "0.0.0.0", port.to_string())
+        format!("{}:{}", "0.0.0.0", port)
             .parse::<SocketAddr>()
             .unwrap()
     };
@@ -63,10 +63,10 @@ async fn main() -> Result<()> {
 }
 
 fn setup_logging() {
-    let log_level = match var("SENTRY_WEBHOOK_LOG_LEVEL")
-        .unwrap_or("info".to_string())
-        .as_str()
-    {
+    let raw_level = config::CONFIG.level.clone();
+    let level = raw_level.unwrap_or_else(|| "info".to_string());
+
+    let log_level = match level.as_str() {
         "off" => log::LevelFilter::Off,
         "error" => log::LevelFilter::Error,
         "warn" => log::LevelFilter::Warn,
