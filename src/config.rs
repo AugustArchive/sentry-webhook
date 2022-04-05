@@ -44,7 +44,10 @@ fn env_to_config() -> Config {
         sentry_dsn,
         port: if port.is_some() {
             let p = port.unwrap();
-            Some(p.parse::<u16>().unwrap())
+            Some(
+                p.parse::<u16>()
+                    .expect("Unable to parse String -> u16 for http port."),
+            )
         } else {
             None
         },
@@ -53,6 +56,12 @@ fn env_to_config() -> Config {
 }
 
 pub static CONFIG: Lazy<Config> = Lazy::new(|| {
-    let contents = read_to_string("config.toml").expect("Unable to open config.toml :(");
-    toml::from_str(&contents).unwrap_or(env_to_config())
+    let res = read_to_string("config.toml");
+
+    match res {
+        Ok(contents) => {
+            toml::from_str::<Config>(&contents).expect("Unable to parse 'config.toml' contents.")
+        }
+        Err(_) => env_to_config(),
+    }
 });

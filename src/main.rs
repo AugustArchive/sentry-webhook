@@ -17,7 +17,7 @@ use ansi_term::Colour::RGB;
 use chrono::Local;
 use fern::Dispatch;
 use log::{debug, info};
-use std::{collections::HashMap, env::var, thread};
+use std::{collections::HashMap, env::var, net::SocketAddr, thread};
 use warp::Filter;
 
 mod config;
@@ -41,15 +41,24 @@ async fn main() -> Result<()> {
         .and(warp::body::json::<HashMap<String, serde_json::Value>>())
         .and_then(routes::sentry);
 
-    let port = config::CONFIG.port.clone();
+    let port = config::CONFIG.port.clone().unwrap_or(3939);
     let routes = warp::any()
         .and(index.or(sentry))
         .with(warp::log("sentry::http"));
 
-    warp::serve(routes)
-        .run(([0, 0, 0, 0], port.unwrap_or(3939)))
-        .await;
+    // Check if we can parse the config host to a SocketAddr.
+    let host = config::CONFIG.host.clone();
+    let addr = if let Some(h) = host {
+        format!("{}:{}", h, port)
+            .parse::<SocketAddr>()
+            .expect(format!("Unable to parse host '{}' -> SocketAddr.", h).as_str())
+    } else {
+        format!("{}:{}", "0.0.0.0", port.to_string())
+            .parse::<SocketAddr>()
+            .unwrap()
+    };
 
+    warp::serve(routes).run(addr).await;
     Ok(())
 }
 
