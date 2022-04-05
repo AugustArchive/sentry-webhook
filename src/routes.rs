@@ -93,7 +93,8 @@ pub async fn sentry(
     resource: String,
     payload: HashMap<String, serde_json::Value>,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    // TODO: do webhook stuff here >:)
+    // TODO: check signature from Sentry here
+
     // let stringified_payload = serde_json::to_string(&payload).unwrap();
     // let digested = digest(stringified_payload);
 
@@ -120,6 +121,9 @@ pub async fn sentry(
         ))),
     }
 }
+
+// TODO(Noel): type-cast `actor` and `payload`
+//             and clean this code up (since it's hot garbage)
 
 async fn on_action_create(
     _resource: &str,

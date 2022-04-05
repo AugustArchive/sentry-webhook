@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::env::var;
 use std::fs::read_to_string;
 
 use once_cell::sync::Lazy;
@@ -20,15 +21,38 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
-    pub json_body_max: Option<u64>,
     pub webhook_url: String,
-    pub sentry_uri: String,
     pub sentry_dsn: Option<String>,
     pub port: Option<u16>,
     pub host: Option<String>,
 }
 
+fn env_to_config() -> Config {
+    // Grab the webhook URL if we have any
+    let webhook_url = if let Ok(value) = var("WORKER_WEBHOOK_URL") {
+        value
+    } else {
+        panic!("Missing `WORKER_WEBHOOK_URL` environment variable.");
+    };
+
+    let sentry_dsn = var("WORKER_SENTRY_DSN").ok();
+    let port = var("WORKER_PORT").ok();
+    let host = var("WORKER_HOST").ok();
+
+    Config {
+        webhook_url,
+        sentry_dsn,
+        port: if port.is_some() {
+            let p = port.unwrap();
+            Some(p.parse::<u16>().unwrap())
+        } else {
+            None
+        },
+        host,
+    }
+}
+
 pub static CONFIG: Lazy<Config> = Lazy::new(|| {
     let contents = read_to_string("config.toml").expect("Unable to open config.toml :(");
-    toml::from_str(&contents).unwrap()
+    toml::from_str(&contents).unwrap_or(env_to_config())
 });
