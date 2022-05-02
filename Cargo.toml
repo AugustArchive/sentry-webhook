@@ -21,7 +21,7 @@ authors = ["Noel <cutie@floofy.dev>"]
 
 [dependencies]
 fern = "0.6.1"
-tokio = { version = "1.18.0", features = ["full"] }
+tokio = { version = "1.18.1", features = ["full"] }
 log = "0.4.16"
 serde = "1.0.137"
 toml = "0.5.9"
