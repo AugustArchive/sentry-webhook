@@ -71,7 +71,7 @@ jobs:
           args: --release
 
       - name: Build and push images
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
