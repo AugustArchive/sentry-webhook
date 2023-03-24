@@ -20,7 +20,7 @@ edition = "2021"
 authors = ["Noel <cutie@floofy.dev>"]
 
 [dependencies]
-fern = "0.6.1"
+fern = "0.6.2"
 tokio = { version = "1.18.2", features = ["full"] }
 log = "0.4.17"
 serde = "1.0.137"
