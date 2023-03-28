@@ -4,7 +4,7 @@
 **sentry-webhook** is a simple [Axum](https://github.com/tokio-rs/axum) application to serve as a middle-man from Sentry to Discord to provide more insight about what happened from Sentry.
 
 ## Features
-- **sentry-webhook** is project-agnostic, if you wish to push only certail projects, just set `SENTRY_PROJECTS=comma,delimited,list` and it will only react on events in `comma,delimited,list`.
+- **sentry-webhook** is project-agnostic, if you wish to push only certain projects, just set `SENTRY_PROJECTS=comma,delimited,list` and it will only react on events in `comma,delimited,list`.
 
 - **sentry-webhook** is a dead-simple worker, which means you can deploy it with one command (i.e, `docker run ghcr.io/auguwu/sentry-webhook`). You only need to provide what Sentry server you're using.
 
